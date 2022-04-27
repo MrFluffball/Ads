@@ -31,7 +31,8 @@ class Sprite {
 }
 
 class TileSprite {
-  constructor(w, h, spriteW, spriteH, tilemapX, tilemapY) {
+  constructor(img, w, h, spriteW, spriteH, tilemapX, tilemapY) {
+    this.img = img
     this.w = w
     this.h = h
     this.spriteW = spriteW
@@ -41,9 +42,8 @@ class TileSprite {
 
     this.draw = function(x,y) {
       ctx.imageSmoothingEnabled = false;
-      //ctx.drawImage(tileAtlas, this.tilemapX * atlasTilesize + (this.tilemapX + 1), this.tilemapY*atlasTilesize + (this.tilemapY + 1), atlasTilesize, atlasTilesize, x, y, this.w, this.h)
-      //ctx.drawImage(tile_atlas, this.tilemapX * this.spriteW + (this.tilemapX), this.tilemapY * this.spriteH + (this.tilemapY), this.tilemapW, this.tilemapH, x, y, this.w, this.h)
-      ctx.drawImage(tile_atlas, 0, 0, this.spriteW, this.spriteH, x, y, this.w, this.h)
+      // adding 1 to the tilemapY does move images up by 1
+      ctx.drawImage(this.img, this.tilemapX * this.spriteW + (this.tilemapX+1), this.tilemapY * this.spriteH + (this.tilemapY), this.spriteW, this.spriteH, x, y, this.w, this.h)
     }
   }
 }
@@ -53,3 +53,4 @@ class TileSprite {
 let tile_atlas = document.getElementById("tile_atlas")
 let long_base = document.getElementById("long_base")
 let wide_base = document.getElementById("wide_base")
+let arrows = document.getElementById("arrows")

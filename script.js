@@ -5,10 +5,7 @@ Game.tick = function() {
 
   drawAds()
   closeAds()
-
-  adList.forEach((i) => {
-    i.highlightCloseOnMouseover()
-  })
+  
   window.requestAnimationFrame(this.tick)
 }.bind(Game)
 
