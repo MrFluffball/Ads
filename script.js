@@ -3,9 +3,14 @@ var Game = {}
 Game.tick = function() {
   ctx.clearRect(0,0,canvas.width,canvas.height)
 
-  drawAds()
+  // create a new ad when there isn't one
+  if (adList.length <= 0) {
+    newAd()
+  }
+
+  updateAds()
   closeAds()
-  
+
   window.requestAnimationFrame(this.tick)
 }.bind(Game)
 

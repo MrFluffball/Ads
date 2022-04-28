@@ -5,11 +5,44 @@ document.addEventListener('click', (event) => {
   click.y = event.clientY;
 })
 
+/*const Keys = {
+  UP: (38, 87),
+  LEFT: (37, 65),
+  DOWN: (40, 83),
+  RIGHT: (39, 68)
+}*/
+const Keys = {
+  UP: 38,
+  LEFT: 37,
+  DOWN: 40,
+  RIGHT: 39
+}
+var key = null
+
+document.addEventListener("keydown", (event) => {
+  if (event.keyCode == Keys.UP) {
+    key = Keys.UP
+  } else if (event.keyCode == Keys.LEFT) {
+    key = Keys.LEFT
+  } else if (event.keyCode == Keys.DOWN) {
+    key = Keys.DOWN
+  } else if (event.keyCode == Keys.RIGHT) {
+    key = Keys.RIGHT
+  }
+
+  adList.forEach(i => {
+    if (i.correctKey(key)) {
+      i.isOpen = false
+    }
+  })
+})
+
+
 const Arrows = {
-  UP: 0,
-  DOWN: 1,
-  LEFT: 2,
-  RIGHT: 3
+  UP: Keys.UP,
+  DOWN: Keys.DOWN,
+  LEFT: Keys.LEFT,
+  RIGHT: Keys.RIGHT
 }
 
 // Masterlist of existing ads
@@ -23,8 +56,16 @@ class Ad {
     this.h = 0
     this.isOpen = true
     this.arrow = null
+    this.creationDate = Date.now()
+    this.flashing = false
+  }
+  correctKey(key) {
+    return this.arrow == key
   }
   drawArrow(x,y) {
+    // don't draw the ad if we're flashing right now
+    if (this.flashing) { return }
+
     var arrowType = null
     // decide what sprite to use based on the arrow object
     if (this.arrow == Arrows.UP) {
@@ -38,6 +79,14 @@ class Ad {
     }
     // then we draw it
     arrowType.draw(x,y)
+  }
+
+  update() {
+    // close the ad once enough time has passed
+    // TODO: add "miss" popup after missing the ad
+    if (Date.now() - this.creationDate >= 2000) {
+      this.isOpen = false
+    }
   }
 }
 
@@ -89,8 +138,9 @@ function closeAds() {
   }
 }
 
-function drawAds() {
+function updateAds() {
   adList.forEach((i) => {
+    i.update()
     i.draw()
   })
 }
